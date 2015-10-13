@@ -1,0 +1,17 @@
+{
+  "name": "babel-n_",
+  "version": "0.0.1",
+  "description": "A REPL for Babel that allows binding to the _ variable.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "repl",
+    "babel",
+    "lodash",
+    "cli"
+  ],
+  "author": "wayne.elgin@gmail.com",
+  "license": "ISC"
+}
