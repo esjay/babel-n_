@@ -5,6 +5,7 @@
   "main": "index.js",
   "repository": "github.com/esjay/babel-n_",
   "scripts": {
+    "prepublish": "babel src --out-dir lib",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -26,6 +27,6 @@
     "babel": "^5.8.23"
   },
   "bin": {
-    "bn_": "./bin/_babel-n_.js"
+    "bn_": "./bin/babel-n_"
   }
 }
