@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "A REPL for Babel that allows binding to the _ variable.",
   "main": "index.js",
-  "repository": "github.com/esjay/babel-n_",
+  "repository": "esjay/babel-n_",
   "scripts": {
     "prepublish": "babel src --out-dir lib",
     "test": "echo \"Error: no test specified\" && exit 1"
