@@ -20,6 +20,10 @@ program.option("-w, --whitelist [whitelist]", "Whitelist of transformers separat
 program.option("-b, --blacklist [blacklist]", "Blacklist of transformers separated by comma to NOT use", util.list);
 program.option("-o, --optional [optional]", "List of optional transformers separated by comma to enable", util.list);
 
+
+// used as the special var to assign the result of REPL expressions
+var specialVar = process.env.SPECIAL_VAR || '$';
+
 var pkg = require("../package.json");
 program.version(pkg.version);
 program.usage("[options] [ -e script | script.js ] [arguments]");
@@ -115,13 +119,63 @@ if (program.eval || program.print) {
 }
 
 function replStart() {
-  repl.start({
-    prompt: "> ",
+  var server = repl.start({
+    prompt: "bn_> ",
     input: process.stdin,
     output: process.stdout,
     eval: replEval,
     useGlobal: true
   });
+
+  // store method reference in case it is overwritten later
+  var getDescriptor = Object.getOwnPropertyDescriptor,
+      setDescriptor = Object.defineProperty;
+
+  // create new pristine `lodash` instance
+  var _ = require('lodash').runInContext(server.context);
+
+  // state vars
+  var prevVal = _,
+      currVal = _;
+
+  // inject lodash into the context
+  setDescriptor(server.context, '_', {
+      'configurable': true,
+      'enumerable': false,
+      'get': function () {
+          return currVal;
+      },
+      'set': function (val) {
+          prevVal = currVal;
+          currVal = val;
+      }
+  });
+
+  // redirect REPL changes of `_` to the new special variable
+  _.each(repl._builtinLibs, function (name) {
+      var context = server.context,
+          descriptor = getDescriptor(context, name);
+
+      setDescriptor(context, name, _.assign(descriptor, {
+          'get': _.wrap(descriptor.get, function (get) {
+              var context = server.context,
+                  result = get();
+
+              context[specialVar] = context._;
+              currVal = prevVal;
+              return result;
+          })
+      }));
+  });
+
+  var events = server.rli._events;
+  events.line = _.wrap(events.line, function (line, cmd) {
+      var context = server.context;
+      line(cmd);
+      context[specialVar] = context._;
+      currVal = prevVal;
+  });
+
 }
 
 function replEval(code, context, filename, callback) {
