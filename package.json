@@ -1,6 +1,6 @@
 {
   "name": "babel-n_",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A REPL for Babel that allows binding to the _ variable.",
   "main": "index.js",
   "repository": "esjay/babel-n_",
