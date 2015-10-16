@@ -1,7 +1,7 @@
 {
   "name": "babel-n_",
   "version": "0.0.3",
-  "description": "A REPL for Babel that allows binding to the _ variable.",
+  "description": "A Babel REPL that bundles lodash",
   "main": "index.js",
   "repository": "esjay/babel-n_",
   "scripts": {
