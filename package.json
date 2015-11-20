@@ -19,7 +19,7 @@
   "dependencies": {
     "babel-core": "^6.1.21",
     "commander": "^2.9.0",
-    "eslint": "^1.9.0",
+    "eslint": "^1.10.0",
     "lodash": "^3.10.1",
     "path-is-absolute": "^1.0.0"
   },
