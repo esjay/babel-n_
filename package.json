@@ -24,7 +24,7 @@
     "path-is-absolute": "^1.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.1.18"
+    "babel-cli": "^6.3.17"
   },
   "bin": {
     "bn_": "./bin/babel-n_"
