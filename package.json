@@ -1,6 +1,6 @@
 {
   "name": "babel-n_",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A Babel REPL that bundles lodash",
   "main": "index.js",
   "repository": "esjay/babel-n_",
