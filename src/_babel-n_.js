@@ -6,6 +6,7 @@ import path from "path";
 import repl from "repl";
 import { util } from "babel-core";
 import * as babel from "babel-core";
+import register from "babel-register";
 import vm from "vm";
 import _ from "lodash";
 
@@ -15,11 +16,6 @@ program.option("-e, --eval [script]", "Evaluate script");
 program.option("-p, --print [code]", "Evaluate script and print result");
 program.option("-i, --ignore [regex]", "Ignore all files that match this regex when using the require hook");
 program.option("-x, --extensions [extensions]", "List of extensions to hook into [.es6,.js,.es,.jsx]");
-program.option("-r, --stage [stage]", "Enable support for specific ECMAScript stages");
-program.option("-w, --whitelist [whitelist]", "Whitelist of transformers separated by comma to ONLY use", util.list);
-program.option("-b, --blacklist [blacklist]", "Blacklist of transformers separated by comma to NOT use", util.list);
-program.option("-o, --optional [optional]", "List of optional transformers separated by comma to enable", util.list);
-
 
 // used as the special var to assign the result of REPL expressions
 var specialVar = process.env.SPECIAL_VAR || '$';
@@ -31,13 +27,12 @@ program.parse(process.argv);
 
 //
 
-babel.register({
+register({
   extensions:   program.extensions,
   blacklist:    program.blacklist,
   whitelist:    program.whitelist,
   optional:     program.optional,
-  ignore:       program.ignore,
-  stage:        program.stage,
+  ignore:       program.ignore
 });
 
 //
@@ -47,11 +42,7 @@ var _eval = function (code, filename) {
   if (!code) return undefined;
 
   code = babel.transform(code, {
-    filename: filename,
-    blacklist: program.blacklist,
-    whitelist: program.whitelist,
-    optional: program.optional,
-    stage: program.stage
+    filename: filename
   }).code;
 
   return vm.runInThisContext(code, {
